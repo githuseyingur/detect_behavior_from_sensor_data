@@ -1,2 +1,4 @@
 # Detect Behavior From Sensor Data (Helios)
-Deep learning architectures for time-series classification with wearable sensors (Helios wristband). Includes implementations of residual CNNs, GRU/LSTM hybrids, Transformers approaches. Experiments cover IMU, ThM, and ToF sensor modalities.
+This repository explores time-series classification using multimodal sensor data collected from the Helios wristband, which integrates IMU (motion), ThM (temperature), and ToF (proximity) sensors. The objective is to detect and differentiate body-focused repetitive behaviors (BFRBs), such as hair pulling, from everyday non-BFRB gestures, such as adjusting glasses.
+
+Accurately disentangling these behaviors is an important step toward developing reliable wearable BFRB-detection devices, which have direct applications in mental health monitoring and treatment support.
