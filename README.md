@@ -13,8 +13,8 @@ Accelerometer: Measures linear acceleration along X, Y, and Z axes.<br>
 Gyroscope: Measures angular velocity (rotation) around X, Y, and Z axes.<br><br>
 
 In the competition, the sensors are as follows:<br>
-3 accelerometer channels (acc_x, acc_y, acc_z): Measure linear acceleration along the X, Y, and Z axes, capturing the object’s movement and speed.<br>
-4 rotation channels (rot_x, rot_y, rot_z, rot_w): Represent the object’s orientation in quaternion format, tracking its angular position and rotation in 3D space.
+* 3 accelerometer channels (acc_x, acc_y, acc_z): Measure linear acceleration along the X, Y, and Z axes, capturing the object’s movement and speed.<br>
+* 4 rotation channels (rot_x, rot_y, rot_z, rot_w): Represent the object’s orientation in quaternion format, tracking its angular position and rotation in 3D space.
 
 ### THM
 Thermopile (THM) sensors are infrared sensors that measure temperature from a distance. They consist of many tiny thermocouples connected in series or parallel, which convert incoming infrared radiation into an electrical signal.
