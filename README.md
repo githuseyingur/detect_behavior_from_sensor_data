@@ -7,7 +7,7 @@ Accurately disentangling these behaviors is an important step toward developing 
 BFRB (Body-Focused Repetitive Behaviors) are repetitive self-grooming behaviors such as hair pulling, skin picking, or nail biting, which often lead to physical damage and are difficult to control.
 
 ## IMU, THM, ToF sensors
-#### IMU
+#### <u>IMU</u>
 IMU (Inertial Measurement Unit) sensors are devices that measure the motion and orientation of an object. They typically include:<br>
 Accelerometer: Measures linear acceleration along X, Y, and Z axes.<br>
 Gyroscope: Measures angular velocity (rotation) around X, Y, and Z axes.<br><br>
