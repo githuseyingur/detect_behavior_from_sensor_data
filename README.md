@@ -12,16 +12,16 @@ IMU (Inertial Measurement Unit) sensors are devices that measure the motion and 
 Accelerometer: Measures linear acceleration along X, Y, and Z axes.<br>
 Gyroscope: Measures angular velocity (rotation) around X, Y, and Z axes.<br><br>
 
->In the competition, the sensors are as follows:<br>
+>In the dataset, the sensors are as follows:<br>
 >* 3 accelerometer channels **(acc_x, acc_y, acc_z)**: Measure linear acceleration along the X, Y, and Z axes, capturing the object’s movement and speed.<br>
 >* 4 rotation channels **(rot_x, rot_y, rot_z, rot_w)**: Represent the object’s orientation in quaternion format, tracking its angular position and rotation in 3D space.
 
 ### THM
 Thermopile (THM) sensors are infrared sensors that measure temperature from a distance. They consist of many tiny thermocouples connected in series or parallel, which convert incoming infrared radiation into an electrical signal.
->In this competition, there are 5 THM (thermopile) sensors.
+>In this dataset, there are 5 THM (thermopile) sensors.
 
 ### ToF
 Time-of-Flight (ToF) sensors measure the distance to objects by emitting light (usually infrared) and calculating the time it takes for the light to reflect back. This allows them to create depth maps and detect shapes in 3D.<br>
 
->In the competition, the ToF (Time-of-Flight) sensor has a resolution of **5 × 64 = 320** pixels. Each pixel measures the distance to the object at that point, allowing the sensor to capture depth information across 320 points. This creates a low-resolution 3D representation of the scene.
+>In the dataset, the ToF (Time-of-Flight) sensor has a resolution of **5 × 64 = 320** pixels. Each pixel measures the distance to the object at that point, allowing the sensor to capture depth information across 320 points. This creates a low-resolution 3D representation of the scene.
 >In short: The ToF sensor provides 320 depth measurements to capture spatial information.
