@@ -8,12 +8,19 @@ BFRB (Body-Focused Repetitive Behaviors) are repetitive self-grooming behaviors 
 
 ## IMU, THM, ToF sensors
 #### IMU
-acc_x, acc_y, acc_z: Linear acceleration on X, Y, Z axes.
-rot_x, rot_y, rot_z, rot_w: Orientation (quaternion components) from the IMU.
+IMU (Inertial Measurement Unit) sensors are devices that measure the motion and orientation of an object. They typically include:<br>
+Accelerometer: Measures linear acceleration along X, Y, and Z axes.<br>
+Gyroscope: Measures angular velocity (rotation) around X, Y, and Z axes.<br><br>
+
+In the competition, the sensors are as follows:
+3 accelerometer channels (acc_x, acc_y, acc_z): Measure linear acceleration along the X, Y, and Z axes, capturing the object’s movement and speed.
+4 rotation channels (rot_x, rot_y, rot_z, rot_w): Represent the object’s orientation in quaternion format, tracking its angular position and rotation in 3D space.
 
 #### THM
 Thermopile (THM) sensors are infrared sensors that measure temperature from a distance. They consist of many tiny thermocouples connected in series or parallel, which convert incoming infrared radiation into an electrical signal.
 
 #### ToF
 Time-of-Flight (ToF) sensors measure the distance to objects by emitting light (usually infrared) and calculating the time it takes for the light to reflect back. This allows them to create depth maps and detect shapes in 3D.
-If a ToF sensor has 5 × 64 = 320 pixels, it means it captures depth information with 320 independent measurement points (like a low-resolution depth camera). Each pixel represents a distance value, enabling the sensor to build a small 3D image of the scene.
+
+In the competition, the ToF (Time-of-Flight) sensor has a resolution of 5 × 64 = 320 pixels. Each pixel measures the distance to the object at that point, allowing the sensor to capture depth information across 320 points. This creates a low-resolution 3D representation of the scene.
+In short: The ToF sensor provides 320 depth measurements to capture spatial information.
