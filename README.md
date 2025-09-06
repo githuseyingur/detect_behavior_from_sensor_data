@@ -16,6 +16,14 @@ Gyroscope: Measures angular velocity (rotation) around X, Y, and Z axes.<br><br>
 >* 3 accelerometer channels **(acc_x, acc_y, acc_z)**: Measure linear acceleration along the X, Y, and Z axes, capturing the object’s movement and speed.<br>
 >* 4 rotation channels **(rot_x, rot_y, rot_z, rot_w)**: Represent the object’s orientation in quaternion format, tracking its angular position and rotation in 3D space.
 
+```python 
+cols = [col for col in test.columns if col.startswith('acc') or col.startswith('rot')]
+train[cols]
+```
+
+<img width="547" height="191" alt="Ekran görüntüsü 2025-09-06 111656" src="https://github.com/user-attachments/assets/108009b0-52bd-49d9-bde2-b3ccff8059a3" />
+
+
 ### THM
 Thermopile (THM) sensors are infrared sensors that measure temperature from a distance. They consist of many tiny thermocouples connected in series or parallel, which convert incoming infrared radiation into an electrical signal.
 >In this dataset, there are 5 THM (thermopile) sensors.
@@ -25,3 +33,5 @@ Time-of-Flight (ToF) sensors measure the distance to objects by emitting light (
 
 >In the dataset, the ToF (Time-of-Flight) sensor has a resolution of **5 × 64 = 320** pixels. Each pixel measures the distance to the object at that point, allowing the sensor to capture depth information across 320 points. This creates a low-resolution 3D representation of the scene.
 >In short: The ToF sensor provides 320 depth measurements to capture spatial information.
+
+  
