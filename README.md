@@ -28,10 +28,22 @@ train[cols]
 Thermopile (THM) sensors are infrared sensors that measure temperature from a distance. They consist of many tiny thermocouples connected in series or parallel, which convert incoming infrared radiation into an electrical signal.
 >In this dataset, there are 5 THM (thermopile) sensors.
 
+```python 
+thm_cols = [col for col in test.columns if col.startswith('thm')]
+train[thm_cols]
+```
+<img width="419" height="187" alt="thm" src="https://github.com/user-attachments/assets/0192c362-525f-4907-887d-91f2deaf2b2f" />
+
+
 ### ToF
 Time-of-Flight (ToF) sensors measure the distance to objects by emitting light (usually infrared) and calculating the time it takes for the light to reflect back. This allows them to create depth maps and detect shapes in 3D.<br>
 
 >In the dataset, the ToF (Time-of-Flight) sensor has a resolution of **5 × 64 = 320** pixels. Each pixel measures the distance to the object at that point, allowing the sensor to capture depth information across 320 points. This creates a low-resolution 3D representation of the scene.
 >In short: The ToF sensor provides 320 depth measurements to capture spatial information.
 
+```python 
+tof_cols = [col for col in test.columns if col.startswith('tof')]
+train[tof_cols]
+```
   
+<img width="1429" height="217" alt="tof" src="https://github.com/user-attachments/assets/2916c6c4-2bfa-4e18-b09e-5b015d86f247" />
