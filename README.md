@@ -51,24 +51,24 @@ train[tof_cols]
 
 ## GESTURES
 ### BFRB-Like Gestures
-Above ear - Pull hair
-Forehead - Pull hairline
-Forehead - Scratch
-Eyebrow - Pull hair
-Eyelash - Pull hair
-Neck - Pinch skin
-Neck - Scratch
-Cheek - Pinch skin
+* Above ear - Pull hair
+* Forehead - Pull hairline
+* Forehead - Scratch
+* Eyebrow - Pull hair
+* Eyelash - Pull hair
+* Neck - Pinch skin
+* Neck - Scratch
+* Cheek - Pinch skin
 
 
 ### Non-BFRB-Like Gestures (Non-Target Gestures)
-Drink from bottle/cup
-Glasses on/off
-Pull air toward your face
-Pinch knee/leg skin
-Scratch knee/leg skin
-Write name on leg
-Text on phone
-Feel around in tray and pull out an object
-Write name in air
-Wave hello
+* Drink from bottle/cup
+* Glasses on/off
+* Pull air toward your face
+* Pinch knee/leg skin
+* Scratch knee/leg skin
+* Write name on leg
+* Text on phone
+* Feel around in tray and pull out an object
+* Write name in air
+* Wave hello
