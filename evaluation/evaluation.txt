@@ -1,19 +1,8 @@
-Bu yarışmadaki değerlendirme metriği, iki bileşeni eşit olarak ağırlıklandıran bir 
-makro F1 versiyonu kullanıyor:
+This competition's evaluation metric uses a version of macro F1 that equally weights two components:
 
-1. Target veya Non-Target Hareketler İçin İkili F1 (Binary F1): Bu bileşen, 
-modelinizin bir hareketin Target tiplerden biri mi yoksa Non-Target bir tip mi 
-olduğunu doğru tahmin etme yeteneğini ölçer.
+Binary F1 for Target or Non-Target Gestures: This component measures your model's ability to correctly predict whether a gesture is one of the Target types or a Non-Target type.
 
-2. Hareketler İçin Makro F1 (Macro F1): Bu bileşen ise, tüm Non-Target sıralamaların 
-tek bir "non_target" sınıfına dahil edildiği makro F1 skorudur. Yani, modelinizin farklı 
-hareket tiplerini (hedef ve tek birleştirilmiş hedef olmayan) ne kadar iyi ayırt ettiğini 
-gösterir.
+Macro F1 for Gestures: This component calculates the macro F1 score where all Non-Target sequences are grouped into a single "non_target" class. In other words, it shows how well your model distinguishes between different gesture types (Target and a single combined Non-Target class).
 
-Nihai skor, bu ikili F1 ve makro F1 skorlarının ortalamasıdır.
+The final score is the average of these Binary F1 and Macro F1 scores.
 
----NOT---
-* Bu yarışmaya, modellerin her seferinde tek bir sıralama üzerinde çıkarım yapmasını 
-sağlayan sağlanan değerlendirme API'sini kullanarak gönderim yapmanız gerekmektedir.
-
-* Test setindeki her sequence_id için karşılık gelen gesture değerini tahmin etmelisiniz.
