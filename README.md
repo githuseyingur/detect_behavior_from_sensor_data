@@ -2,11 +2,11 @@
 This repository explores time-series classification using multimodal sensor data collected from the Helios wristband, which integrates IMU (motion), ThM (temperature), and ToF (proximity) sensors. The objective is to detect and differentiate body-focused repetitive behaviors (BFRBs), such as hair pulling, from everyday non-BFRB gestures, such as adjusting glasses.
 
 Accurately disentangling these behaviors is an important step toward developing reliable wearable BFRB-detection devices, which have direct applications in mental health monitoring and treatment support.
-
+<br><br><br>
 ## What is BFRB?
 BFRB (Body-Focused Repetitive Behaviors) are repetitive self-grooming behaviors such as hair pulling, skin picking, or nail biting, which often lead to physical damage and are difficult to control.
 
-<br><br>
+<br><br><br>
 
 ## IMU, THM, ToF sensors
 ### IMU
@@ -49,7 +49,7 @@ train[tof_cols]
 ```
   
 <img width="1429" height="217" alt="tof" src="https://github.com/user-attachments/assets/2916c6c4-2bfa-4e18-b09e-5b015d86f247" />
-<br><br>
+<br><br><br>
 
 ## GESTURES (Target)
 ### BFRB-Like Gestures
@@ -75,10 +75,11 @@ train[tof_cols]
 * Write name in air
 * Wave hello
 
-<br><br>
+<br><br><br>
 
 ## DATA
 <img width="1920" height="578" alt="train" src="https://github.com/user-attachments/assets/563191ef-102b-4834-9c98-6fe6cc7c58e2" />
+
 ### TRAIN DATA
 * row_id
 * sequence_id - An ID for the batch of sensor data. Each sequence includes one Transition, one Pause, and one Gesture.
