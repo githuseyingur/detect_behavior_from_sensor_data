@@ -279,6 +279,7 @@ All models operate on variable-length sensor sequences and are trained in a **su
 
 Model diversity is achieved through differences in **temporal modeling (GRU / LSTM variants)**, **attention usage**, and **feature emphasis**, while sharing a common preprocessing and optimization backbone.
 
+<br>
 
 ## Input Representation & Preprocessing
 
@@ -288,6 +289,7 @@ Model diversity is achieved through differences in **temporal modeling (GRU / LS
 - Subjects with incorrect sensor orientation removed during data cleaning
 - Left-handed subjects explicitly considered during subject-level splitting
 
+<br>
 
 ## Core Architectural Components
 
@@ -307,6 +309,7 @@ Regularization techniques:
 - **Dropout**
 - **Weight decay (L2 regularization)**
 
+<br>
 
 ## Individual Models
 
