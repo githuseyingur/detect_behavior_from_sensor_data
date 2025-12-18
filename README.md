@@ -428,6 +428,7 @@ The adaptive ensemble logic is applied **per sample**, producing the final predi
 
 # Performance Summary
 
-- Final evaluation score (private test set): **0.8284**
-- Score obtained using the full ensemble inference pipeline
+- Evaluation score on development (public) set: **0.8506**
+- Evaluation score on final (private) test set: **0.8284**
+- Scores obtained using the full four-model ensemble inference pipeline
 - Reflects performance across both binary and multi-class objectives
