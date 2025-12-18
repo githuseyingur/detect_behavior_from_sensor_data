@@ -270,4 +270,118 @@ This evaluation scheme rewards models that:
 - Accurately distinguish BFRB vs. non-BFRB behaviors  
 - Correctly classify specific BFRB gesture types
 
+<br><br><br>
+# MODELLING
+
+### General Approach
+
+The final solution is based on an **ensemble of four independently trained models**.  
+Each model processes the same IMU-based temporal sensor input but differs in terms of architecture, feature representation, and inductive bias.
+
+Rather than relying on a single model or a naive averaging strategy, the final prediction is obtained through a **confidence- and disagreement-aware ensemble mechanism**, designed to preserve strong predictions while remaining robust to model uncertainty.
+
+---
+
+## Individual Models
+
+### Model 1
+
+- Sequence-based deep learning model operating directly on raw IMU time-series.
+- Focuses on capturing fine-grained temporal motion patterns.
+- Particularly strong on frequently repeated gesture types.
+- Outputs a full probability distribution over all gesture classes.
+
+---
+
+### Model 2
+
+- Uses an alternative preprocessing pipeline with enhanced normalization.
+- More robust to subject-level variability and orientation differences.
+- Emphasizes generalization across different motion execution styles.
+- Produces calibrated class probability outputs.
+
+---
+
+### Model 3
+
+- Recurrent architecture optimized for long-range temporal dependencies.
+- Effective for gestures with longer duration and complex motion structure.
+- Complements other models by capturing extended temporal context.
+
+---
+
+### Model 4
+
+- Feature-enhanced model combining temporal learning with signal-domain representations.
+- Incorporates additional descriptors such as frequency-domain energy and spatial signal characteristics.
+- Provides complementary information to purely sequence-driven models.
+
+---
+
+## Ensemble Strategy
+
+### Motivation
+
+Each individual model performs well on different subsets of gestures and motion characteristics.  
+A simple averaging of predictions may suppress confident outputs when models disagree.
+
+To address this, the ensemble dynamically adapts its behavior based on **model agreement** for each input sequence.
+
+---
+
+### Measuring Model Disagreement
+
+- For a given sequence, probability outputs from all four models are compared.
+- **Jensen–Shannon Divergence (JSD)** is computed pairwise between model predictions.
+- The mean JSD value serves as a quantitative measure of disagreement:
+  - **Low disagreement** → models are consistent
+  - **High disagreement** → models provide conflicting predictions
+
+---
+
+### Adaptive Combination Mechanism
+
+The ensemble blends two complementary behaviors depending on the disagreement level.
+
+#### Low Disagreement: Consensus Reinforcement
+
+- Model outputs are combined using the **geometric mean** of probabilities.
+- Encourages agreement-driven predictions and improves stability.
+
+#### High Disagreement: Confidence Preservation
+
+- The model with the **highest maximum class confidence** is identified.
+- The final prediction is softly biased toward this model to avoid over-smoothing.
+- A mild probability sharpening is applied to preserve decision clarity.
+
+A continuous gating factor `t ∈ [0, 1]` controls the transition between these two regimes.
+
+---
+
+### Final Prediction
+
+In log-probability space, the ensemble output is computed as:
+> ## log_p = (1 − t) · log(p_consensus) + t · log(p_confident)
+
+- `p_consensus`: geometric mean of all model probabilities  
+- `p_confident`: probability output of the most confident model  
+- The final class label is selected via `argmax(log_p)`
+
+---
+
+## Advantages of the Ensemble
+
+- Preserves strong predictions for difficult or ambiguous samples
+- Avoids excessive smoothing when model opinions diverge
+- Robust across different subjects, motion styles, and gesture durations
+- Well-aligned with both binary and multi-class evaluation objectives
+
+---
+
+## Inference Pipeline
+
+During inference, all four models are executed for each sequence.  
+The adaptive ensemble logic is applied **per sample**, and the resulting prediction represents the final output of the system.
+
+
 
