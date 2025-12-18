@@ -271,7 +271,7 @@ This evaluation scheme rewards models that:
 - Correctly classify specific BFRB gesture types
 
 <br><br><br>
-# MODELLING
+# Modelling
 ### General Approach
 
 The solution is built on an **IMU-only time-series modeling pipeline** and finalized using an **ensemble of four deep learning models**.  
@@ -387,6 +387,7 @@ Fusion is performed in log-probability space:
 Final class prediction is obtained via `argmax(log_p)`.
 
 <br>
+
 ## Training & Validation Strategy
 
 - **Subject-independent cross-validation**
@@ -395,6 +396,7 @@ Final class prediction is obtained via `argmax(log_p)`.
 - Optimization aligned with both **binary** and **multi-class macro F1 objectives**
 
 <br>
+
 ## Inference
 
 All four models are executed for each sequence.  
