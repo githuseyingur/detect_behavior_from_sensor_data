@@ -1,8 +1,0 @@
-This competition's evaluation metric uses a version of macro F1 that equally weights two components:
-
-Binary F1 for Target or Non-Target Gestures: This component measures your model's ability to correctly predict whether a gesture is one of the Target types or a Non-Target type.
-
-Macro F1 for Gestures: This component calculates the macro F1 score where all Non-Target sequences are grouped into a single "non_target" class. In other words, it shows how well your model distinguishes between different gesture types (Target and a single combined Non-Target class).
-
-The final score is the average of these Binary F1 and Macro F1 scores.
-
