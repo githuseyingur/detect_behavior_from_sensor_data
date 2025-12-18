@@ -94,6 +94,8 @@ train[tof_cols]
 * thm_[1-5] - There are five thermopile sensors on the watch which record temperature in degrees Celsius. Note that the index/number for each corresponds to the index in the photo on the Overview tab.
 * tof_[1-5]_v[0-63] - There are five time-of-flight sensors on the watch that measure distance. In the dataset, the 0th pixel for the first time-of-flight sensor can be found with column name tof_1_v0, whereas the final pixel in the grid can be found under column tof_1_v63. This data is collected row-wise, where the first pixel could be considered in the top-left of the grid, with the second to its right, ultimately wrapping so the final value is in the bottom right (see image above). The particular time-of-flight sensor is denoted by the number at the start of the column name (e.g., 1_v0 is the first pixel for the first time-of-flight sensor while 5_v0 is the first pixel for the fifth time-of-flight sensor). If there is no sensor response (e.g., if there is no nearby object causing a signal reflection), a -1 is present in this field. Units are uncalibrated sensor values in the range 0-254. Each sensor contains 64 pixels arranged in an 8x8 grid, visualized in the figure below.
 
+<br>
+
 ###  DEMOGRAPHIC DATA
 * subject
 * adult_child: Indicates whether the participant is a child (0) or an adult (1). Adults are defined as individuals aged 18 years or older.
@@ -104,12 +106,16 @@ train[tof_cols]
 * shoulder_to_wrist_cm: Distance from shoulder to wrist in centimeters.
 * elbow_to_wrist_cm: Distance from elbow to wrist in centimeters.
 
+<br>
+
 ### Dataset Composition
 - The dataset consists of **81 subjects** and **8,151 motion sequences**.
 - There are **18 gesture classes** in total, including both **target (BFRB-related)** and **non-target** gestures.
 - All subjects perform **all gesture types**, and each gesture is repeated **multiple times per subject**.
 - A subset of gestures corresponds to **BFRB behaviors**, while others are **non-BFRB control gestures**.
 - The distinction between *Target* and *Non-Target* gestures is provided only in the **training set** via the `sequence_type` feature and is **not available in the test set**.
+
+<br>
 
 ### Sequence Types and Metadata (Train-only)
 The following metadata values are **present only in the training set** and do **not appear in the test set**:
@@ -129,6 +135,8 @@ The following metadata values are **present only in the training set** and do **
 
 These features cannot be used at inference time and were treated with care to avoid data leakage.
 
+<br>
+
 ### Sequence Length Statistics
 
 Motion sequences are variable-length. The distribution of sequence lengths (`SEQ_LEN`) is as follows:
@@ -146,17 +154,21 @@ Motion sequences are variable-length. The distribution of sequence lengths (`SEQ
 
 This large variance in sequence length makes **temporal modeling and attention mechanisms especially important**.
 
+<br>
+
 ### Handedness and Data Cleaning
 - **12 subjects are left-handed**.
 - **2 subjects were identified with incorrectly mounted devices**, indicated by a consistently negative mean in the `acc_y` signal.
 - These 2 subjects were **excluded from training** to prevent systematic noise.
+
+<br>
 
 ### Train / Validation Split Strategy
 - Data was split **by subject**, ensuring that no subject appears in both training and validation sets.
 - Left-handed subjects were **evenly distributed** across folds to maintain balance.
 - This strategy reflects a realistic generalization scenario and prevents subject-level leakage.
 
-
+<br>
 
 ## Gesture Distribution
 ### Total Motion Samples per Gesture  
@@ -183,6 +195,8 @@ This large variance in sequence length makes **temporal modeling and attention m
 | Write name on leg | 10,138 |
 | Pinch knee/leg skin | 9,844 |
 
+<br>
+
 ### Number of Sequences per Gesture
 | Gesture | # Sequences |
 |-----------|-------|
@@ -205,6 +219,7 @@ This large variance in sequence length makes **temporal modeling and attention m
 | Drink from bottle/cup | 161 |
 | Glasses on/off | 161 |
 
+<br>
 
 
 ## Observations
@@ -246,6 +261,8 @@ Each gesture sequence is first evaluated in a **binary classification setting**:
 
 All sequences are converted into this binary form (*target vs. non-target*), and a standard **binary F1 score** is computed across the entire dataset.
 
+<br>
+
 ### 2. Macro F1 Score (F1_macro)
 
 In addition to the binary evaluation, a **multi-class macro F1 score** is calculated:
@@ -259,6 +276,8 @@ This results in **9 total classes**:
 - 1 non_target class  
 
 The **macro F1 score** is then computed by averaging the F1 score **equally across all classes**, ensuring that each class contributes the same weight regardless of frequency.
+
+<br>
 
 ### Final Score
 
