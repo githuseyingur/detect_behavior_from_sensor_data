@@ -51,7 +51,7 @@ train[tof_cols]
 <img width="1429" height="217" alt="tof" src="https://github.com/user-attachments/assets/2916c6c4-2bfa-4e18-b09e-5b015d86f247" />
 <br><br><br>
 
-# GESTURES (Target)
+# Gestures (Target)
 ### BFRB-Like Gestures
 * Above ear - Pull hair
 * Forehead - Pull hairline
