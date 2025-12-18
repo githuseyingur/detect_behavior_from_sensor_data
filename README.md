@@ -213,7 +213,7 @@ This large variance in sequence length makes **temporal modeling and attention m
 - Average repetitions per subject per gesture:
 
 | Gesture | Avg. Repetitions |
-|-||
+|-----------|-------|
 | Above ear – pull hair | 7.88 |
 | Cheek – pinch skin | 7.86 |
 | Eyebrow – pull hair | 7.88 |
