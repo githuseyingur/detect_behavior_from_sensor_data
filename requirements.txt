@@ -1,0 +1,15 @@
+numpy
+pandas
+polars
+scipy
+scikit-learn
+joblib
+
+matplotlib
+tqdm
+
+tensorflow
+torch
+transformers
+
+kagglehub
