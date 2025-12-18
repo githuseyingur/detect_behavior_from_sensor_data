@@ -134,7 +134,7 @@ These features cannot be used at inference time and were treated with care to av
 Motion sequences are variable-length. The distribution of sequence lengths (`SEQ_LEN`) is as follows:
 
 | Statistic | Value |
-|---------|-------|
+||-|
 | Count   | 8,151 |
 | Mean    | 70.54 |
 | Std     | 35.39 |
@@ -156,14 +156,14 @@ This large variance in sequence length makes **temporal modeling and attention m
 - Left-handed subjects were **evenly distributed** across folds to maintain balance.
 - This strategy reflects a realistic generalization scenario and prevents subject-level leakage.
 
----
+
 
 ## Gesture Distribution
 ### Total Motion Samples per Gesture  
 *(Including all time steps across sequences)*
 
 | Gesture | Total Samples |
-|-------|---------------|
+|-||
 | Text on phone | 58,462 |
 | Neck – scratch | 56,619 |
 | Eyebrow – pull hair | 44,305 |
@@ -185,7 +185,7 @@ This large variance in sequence length makes **temporal modeling and attention m
 
 ### Number of Sequences per Gesture
 | Gesture | # Sequences |
-|-------|-------------|
+|-|-|
 | Forehead – scratch | 640 |
 | Text on phone | 640 |
 | Forehead – pull hairline | 640 |
@@ -205,7 +205,7 @@ This large variance in sequence length makes **temporal modeling and attention m
 | Drink from bottle/cup | 161 |
 | Glasses on/off | 161 |
 
----
+
 
 ## Observations
 - **All 81 subjects perform all 18 gestures**, but the **number of repetitions varies significantly** between gestures.
@@ -213,7 +213,7 @@ This large variance in sequence length makes **temporal modeling and attention m
 - Average repetitions per subject per gesture:
 
 | Gesture | Avg. Repetitions |
-|-------|------------------|
+|-||
 | Above ear – pull hair | 7.88 |
 | Cheek – pinch skin | 7.86 |
 | Eyebrow – pull hair | 7.88 |
@@ -280,7 +280,7 @@ Each model processes the same IMU-based temporal sensor input but differs in ter
 
 Rather than relying on a single model or a naive averaging strategy, the final prediction is obtained through a **confidence- and disagreement-aware ensemble mechanism**, designed to preserve strong predictions while remaining robust to model uncertainty.
 
----
+
 
 ## Individual Models
 
@@ -291,7 +291,7 @@ Rather than relying on a single model or a naive averaging strategy, the final p
 - Particularly strong on frequently repeated gesture types.
 - Outputs a full probability distribution over all gesture classes.
 
----
+
 
 ### Model 2
 
@@ -300,7 +300,7 @@ Rather than relying on a single model or a naive averaging strategy, the final p
 - Emphasizes generalization across different motion execution styles.
 - Produces calibrated class probability outputs.
 
----
+
 
 ### Model 3
 
@@ -308,7 +308,7 @@ Rather than relying on a single model or a naive averaging strategy, the final p
 - Effective for gestures with longer duration and complex motion structure.
 - Complements other models by capturing extended temporal context.
 
----
+
 
 ### Model 4
 
@@ -316,7 +316,7 @@ Rather than relying on a single model or a naive averaging strategy, the final p
 - Incorporates additional descriptors such as frequency-domain energy and spatial signal characteristics.
 - Provides complementary information to purely sequence-driven models.
 
----
+
 
 ## Ensemble Strategy
 
@@ -327,7 +327,7 @@ A simple averaging of predictions may suppress confident outputs when models dis
 
 To address this, the ensemble dynamically adapts its behavior based on **model agreement** for each input sequence.
 
----
+
 
 ### Measuring Model Disagreement
 
@@ -337,7 +337,7 @@ To address this, the ensemble dynamically adapts its behavior based on **model a
   - **Low disagreement** → models are consistent
   - **High disagreement** → models provide conflicting predictions
 
----
+
 
 ### Adaptive Combination Mechanism
 
@@ -356,7 +356,7 @@ The ensemble blends two complementary behaviors depending on the disagreement le
 
 A continuous gating factor `t ∈ [0, 1]` controls the transition between these two regimes.
 
----
+
 
 ### Final Prediction
 
@@ -367,7 +367,7 @@ In log-probability space, the ensemble output is computed as:
 - `p_confident`: probability output of the most confident model  
 - The final class label is selected via `argmax(log_p)`
 
----
+
 
 ## Advantages of the Ensemble
 
@@ -376,7 +376,7 @@ In log-probability space, the ensemble output is computed as:
 - Robust across different subjects, motion styles, and gesture durations
 - Well-aligned with both binary and multi-class evaluation objectives
 
----
+
 
 ## Inference Pipeline
 
