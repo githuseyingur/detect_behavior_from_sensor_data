@@ -6,6 +6,8 @@ Accurately disentangling these behaviors is an important step toward developing 
 ## What is BFRB?
 BFRB (Body-Focused Repetitive Behaviors) are repetitive self-grooming behaviors such as hair pulling, skin picking, or nail biting, which often lead to physical damage and are difficult to control.
 
+<br><br>
+
 ## IMU, THM, ToF sensors
 ### IMU
 IMU (Inertial Measurement Unit) sensors are devices that measure the motion and orientation of an object. They typically include:<br>
@@ -47,7 +49,7 @@ train[tof_cols]
 ```
   
 <img width="1429" height="217" alt="tof" src="https://github.com/user-attachments/assets/2916c6c4-2bfa-4e18-b09e-5b015d86f247" />
-
+<br><br>
 
 ## GESTURES (Target)
 ### BFRB-Like Gestures
@@ -73,9 +75,35 @@ train[tof_cols]
 * Write name in air
 * Wave hello
 
-## DATA
-### Dataset Composition
+<br><br>
 
+## DATA
+<img width="1920" height="578" alt="train" src="https://github.com/user-attachments/assets/563191ef-102b-4834-9c98-6fe6cc7c58e2" />
+### TRAIN DATA
+* row_id
+* sequence_id - An ID for the batch of sensor data. Each sequence includes one Transition, one Pause, and one Gesture.
+* sequence_type - If the gesture is a target or non-target type. Train only.
+* sequence_counter - A counter of the row within each sequence.
+* subject - A unique ID for the subject who provided the data.
+* gesture - The target column. Description of sequence Gesture. Train only.
+* orientation - Description of the subject's orientation during the sequence. Train only.
+* behavior - A description of the subject's behavior during the current phase of the sequence.
+* acc_[x/y/z] - Measure linear acceleration along three axes in meters per second squared from the IMU sensor.
+* rot_[w/x/y/z] - Orientation data which combines information from the IMU's gyroscope, accelerometer, and magnetometer to describe the device's orientation in 3D space.
+* thm_[1-5] - There are five thermopile sensors on the watch which record temperature in degrees Celsius. Note that the index/number for each corresponds to the index in the photo on the Overview tab.
+* tof_[1-5]_v[0-63] - There are five time-of-flight sensors on the watch that measure distance. In the dataset, the 0th pixel for the first time-of-flight sensor can be found with column name tof_1_v0, whereas the final pixel in the grid can be found under column tof_1_v63. This data is collected row-wise, where the first pixel could be considered in the top-left of the grid, with the second to its right, ultimately wrapping so the final value is in the bottom right (see image above). The particular time-of-flight sensor is denoted by the number at the start of the column name (e.g., 1_v0 is the first pixel for the first time-of-flight sensor while 5_v0 is the first pixel for the fifth time-of-flight sensor). If there is no sensor response (e.g., if there is no nearby object causing a signal reflection), a -1 is present in this field. Units are uncalibrated sensor values in the range 0-254. Each sensor contains 64 pixels arranged in an 8x8 grid, visualized in the figure below.
+
+###  DEMOGRAPHIC DATA
+* subject
+* adult_child: Indicates whether the participant is a child (0) or an adult (1). Adults are defined as individuals aged 18 years or older.
+* age: Participant's age in years at time of data collection.
+* sex: Participants sex assigned at birth, 0= female, 1 = male.
+* handedness: Dominant hand used by the participant, 0 = left-handed, 1 = right-handed.
+* height_cm: Height of the participant in centimeters.
+* shoulder_to_wrist_cm: Distance from shoulder to wrist in centimeters.
+* elbow_to_wrist_cm: Distance from elbow to wrist in centimeters.
+
+### Dataset Composition
 - The dataset consists of **81 subjects** and **8,151 motion sequences**.
 - There are **18 gesture classes** in total, including both **target (BFRB-related)** and **non-target** gestures.
 - All subjects perform **all gesture types**, and each gesture is repeated **multiple times per subject**.
@@ -83,7 +111,6 @@ train[tof_cols]
 - The distinction between *Target* and *Non-Target* gestures is provided only in the **training set** via the `sequence_type` feature and is **not available in the test set**.
 
 ### Sequence Types and Metadata (Train-only)
-
 The following metadata values are **present only in the training set** and do **not appear in the test set**:
 
 - `sequence_type`: Target, Non-Target  
@@ -119,13 +146,11 @@ Motion sequences are variable-length. The distribution of sequence lengths (`SEQ
 This large variance in sequence length makes **temporal modeling and attention mechanisms especially important**.
 
 ### Handedness and Data Cleaning
-
 - **12 subjects are left-handed**.
 - **2 subjects were identified with incorrectly mounted devices**, indicated by a consistently negative mean in the `acc_y` signal.
 - These 2 subjects were **excluded from training** to prevent systematic noise.
 
 ### Train / Validation Split Strategy
-
 - Data was split **by subject**, ensuring that no subject appears in both training and validation sets.
 - Left-handed subjects were **evenly distributed** across folds to maintain balance.
 - This strategy reflects a realistic generalization scenario and prevents subject-level leakage.
@@ -133,7 +158,6 @@ This large variance in sequence length makes **temporal modeling and attention m
 ---
 
 ## Gesture Distribution
-
 ### Total Motion Samples per Gesture  
 *(Including all time steps across sequences)*
 
@@ -159,7 +183,6 @@ This large variance in sequence length makes **temporal modeling and attention m
 | Pinch knee/leg skin | 9,844 |
 
 ### Number of Sequences per Gesture
-
 | Gesture | # Sequences |
 |-------|-------------|
 | Forehead – scratch | 640 |
@@ -184,7 +207,6 @@ This large variance in sequence length makes **temporal modeling and attention m
 ---
 
 ## Observations
-
 - **All 81 subjects perform all 18 gestures**, but the **number of repetitions varies significantly** between gestures.
 - BFRB-related gestures are generally **repeated more frequently per subject** than non-BFRB gestures.
 - Average repetitions per subject per gesture:
@@ -209,30 +231,7 @@ This large variance in sequence length makes **temporal modeling and attention m
 | Write name on leg | 1.99 |
 | Pinch knee/leg skin | 1.99 |
 | Feel around in tray and pull out an object | 1.99 |
-<img width="1920" height="578" alt="train" src="https://github.com/user-attachments/assets/563191ef-102b-4834-9c98-6fe6cc7c58e2" />
 
-### TRAIN DATA
-* row_id
-* sequence_id - An ID for the batch of sensor data. Each sequence includes one Transition, one Pause, and one Gesture.
-* sequence_type - If the gesture is a target or non-target type. Train only.
-* sequence_counter - A counter of the row within each sequence.
-* subject - A unique ID for the subject who provided the data.
-* gesture - The target column. Description of sequence Gesture. Train only.
-* orientation - Description of the subject's orientation during the sequence. Train only.
-* behavior - A description of the subject's behavior during the current phase of the sequence.
-* acc_[x/y/z] - Measure linear acceleration along three axes in meters per second squared from the IMU sensor.
-* rot_[w/x/y/z] - Orientation data which combines information from the IMU's gyroscope, accelerometer, and magnetometer to describe the device's orientation in 3D space.
-* thm_[1-5] - There are five thermopile sensors on the watch which record temperature in degrees Celsius. Note that the index/number for each corresponds to the index in the photo on the Overview tab.
-* tof_[1-5]_v[0-63] - There are five time-of-flight sensors on the watch that measure distance. In the dataset, the 0th pixel for the first time-of-flight sensor can be found with column name tof_1_v0, whereas the final pixel in the grid can be found under column tof_1_v63. This data is collected row-wise, where the first pixel could be considered in the top-left of the grid, with the second to its right, ultimately wrapping so the final value is in the bottom right (see image above). The particular time-of-flight sensor is denoted by the number at the start of the column name (e.g., 1_v0 is the first pixel for the first time-of-flight sensor while 5_v0 is the first pixel for the fifth time-of-flight sensor). If there is no sensor response (e.g., if there is no nearby object causing a signal reflection), a -1 is present in this field. Units are uncalibrated sensor values in the range 0-254. Each sensor contains 64 pixels arranged in an 8x8 grid, visualized in the figure below.
 
-###  DEMOGRAPHIC DATA
-* subject
-* adult_child: Indicates whether the participant is a child (0) or an adult (1). Adults are defined as individuals aged 18 years or older.
-* age: Participant's age in years at time of data collection.
-* sex: Participants sex assigned at birth, 0= female, 1 = male.
-* handedness: Dominant hand used by the participant, 0 = left-handed, 1 = right-handed.
-* height_cm: Height of the participant in centimeters.
-* shoulder_to_wrist_cm: Distance from shoulder to wrist in centimeters.
-* elbow_to_wrist_cm: Distance from elbow to wrist in centimeters.
 
-* 
+
