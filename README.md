@@ -134,15 +134,15 @@ These features cannot be used at inference time and were treated with care to av
 Motion sequences are variable-length. The distribution of sequence lengths (`SEQ_LEN`) is as follows:
 
 | Statistic | Value |
-||-|
-| Count   | 8,151 |
-| Mean    | 70.54 |
-| Std     | 35.39 |
-| Min     | 29 |
-| 25%     | 51 |
-| Median  | 59 |
-| 75%     | 78 |
-| Max     | 700 |
+|-----------|-------|
+| Count     | 8,151 |
+| Mean      | 70.54 |
+| Std       | 35.39 |
+| Min       | 29 |
+| 25%       | 51 |
+| Median    | 59 |
+| 75%       | 78 |
+| Max       | 700 |
 
 This large variance in sequence length makes **temporal modeling and attention mechanisms especially important**.
 
@@ -163,7 +163,7 @@ This large variance in sequence length makes **temporal modeling and attention m
 *(Including all time steps across sequences)*
 
 | Gesture | Total Samples |
-|-||
+|-----------|-------|
 | Text on phone | 58,462 |
 | Neck – scratch | 56,619 |
 | Eyebrow – pull hair | 44,305 |
@@ -185,7 +185,7 @@ This large variance in sequence length makes **temporal modeling and attention m
 
 ### Number of Sequences per Gesture
 | Gesture | # Sequences |
-|-|-|
+|-----------|-------|
 | Forehead – scratch | 640 |
 | Text on phone | 640 |
 | Forehead – pull hairline | 640 |
