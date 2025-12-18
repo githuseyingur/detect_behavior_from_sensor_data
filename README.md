@@ -77,7 +77,7 @@ train[tof_cols]
 
 <br><br><br>
 
-# DATA
+# Data
 <img width="1920" height="578" alt="train" src="https://github.com/user-attachments/assets/563191ef-102b-4834-9c98-6fe6cc7c58e2" />
 
 ### TRAIN DATA
