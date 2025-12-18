@@ -263,7 +263,8 @@ The **macro F1 score** is then computed by averaging the F1 score **equally acro
 ### Final Score
 
 The final competition score is calculated as:
-Final_Score = (F1_binary + F1_macro) / 2
+
+> Final_Score = (F1_binary + F1_macro) / 2
 
 This evaluation scheme rewards models that:
 - Accurately distinguish BFRB vs. non-BFRB behaviors  
