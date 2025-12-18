@@ -3,12 +3,12 @@ This repository explores time-series classification using multimodal sensor data
 
 Accurately disentangling these behaviors is an important step toward developing reliable wearable BFRB-detection devices, which have direct applications in mental health monitoring and treatment support.
 <br><br><br>
-## What is BFRB?
+# What is BFRB?
 BFRB (Body-Focused Repetitive Behaviors) are repetitive self-grooming behaviors such as hair pulling, skin picking, or nail biting, which often lead to physical damage and are difficult to control.
 
 <br><br><br>
 
-## IMU, THM, ToF sensors
+# IMU, THM, ToF sensors
 ### IMU
 IMU (Inertial Measurement Unit) sensors are devices that measure the motion and orientation of an object. They typically include:<br>
 Accelerometer: Measures linear acceleration along X, Y, and Z axes.<br>
@@ -51,7 +51,7 @@ train[tof_cols]
 <img width="1429" height="217" alt="tof" src="https://github.com/user-attachments/assets/2916c6c4-2bfa-4e18-b09e-5b015d86f247" />
 <br><br><br>
 
-## GESTURES (Target)
+# GESTURES (Target)
 ### BFRB-Like Gestures
 * Above ear - Pull hair
 * Forehead - Pull hairline
@@ -77,7 +77,7 @@ train[tof_cols]
 
 <br><br><br>
 
-## DATA
+# DATA
 <img width="1920" height="578" alt="train" src="https://github.com/user-attachments/assets/563191ef-102b-4834-9c98-6fe6cc7c58e2" />
 
 ### TRAIN DATA
@@ -233,6 +233,40 @@ This large variance in sequence length makes **temporal modeling and attention m
 | Pinch knee/leg skin | 1.99 |
 | Feel around in tray and pull out an object | 1.99 |
 
+<br><br><br>
 
+# Evaluation Metric
+
+### 1. Binary F1 Score (F1_binary)
+
+Each gesture sequence is first evaluated in a **binary classification setting**:
+
+- **Target**: BFRB-like gestures  
+- **Non-Target**: All non-BFRB gestures  
+
+All sequences are converted into this binary form (*target vs. non-target*), and a standard **binary F1 score** is computed across the entire dataset.
+
+### 2. Macro F1 Score (F1_macro)
+
+In addition to the binary evaluation, a **multi-class macro F1 score** is calculated:
+
+- **8 BFRB-like gesture types** are treated as **separate classes**
+- **All non-BFRB gestures** are grouped into a single **non_target** class
+
+This results in **9 total classes**:
+
+- 8 BFRB gesture classes  
+- 1 non_target class  
+
+The **macro F1 score** is then computed by averaging the F1 score **equally across all classes**, ensuring that each class contributes the same weight regardless of frequency.
+
+### Final Score
+
+The final competition score is calculated as:
+Final_Score = (F1_binary + F1_macro) / 2
+
+This evaluation scheme rewards models that:
+- Accurately distinguish BFRB vs. non-BFRB behaviors  
+- Correctly classify specific BFRB gesture types
 
 
