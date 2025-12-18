@@ -423,3 +423,11 @@ Final class prediction is obtained via `argmax(log_p)`.
 
 All four models are executed for each sequence.  
 The adaptive ensemble logic is applied **per sample**, producing the final prediction.
+
+<br><br><br>
+
+# Performance Summary
+
+- Final evaluation score (private test set): **0.8284**
+- Score obtained using the full ensemble inference pipeline
+- Reflects performance across both binary and multi-class objectives
