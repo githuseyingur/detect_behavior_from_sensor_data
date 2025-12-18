@@ -343,7 +343,7 @@ Regularization techniques:
 - Recurrent backbone (GRU/LSTM variant) with attention
 - Designed to complement other models via feature recalibration rather than depth
 
-
+<br>
 
 ## Ensemble Strategy
 
@@ -386,7 +386,7 @@ Fusion is performed in log-probability space:
 
 Final class prediction is obtained via `argmax(log_p)`.
 
-
+<br>
 ## Training & Validation Strategy
 
 - **Subject-independent cross-validation**
@@ -394,7 +394,7 @@ Final class prediction is obtained via `argmax(log_p)`.
 - Care taken to avoid usage of train-only metadata during inference
 - Optimization aligned with both **binary** and **multi-class macro F1 objectives**
 
-
+<br>
 ## Inference
 
 All four models are executed for each sequence.  
