@@ -272,49 +272,76 @@ This evaluation scheme rewards models that:
 
 <br><br><br>
 # MODELLING
-
 ### General Approach
 
-The final solution is based on an **ensemble of four independently trained models**.  
-Each model processes the same IMU-based temporal sensor input but differs in terms of architecture, feature representation, and inductive bias.
+The solution is built on an **IMU-only time-series modeling pipeline** and finalized using an **ensemble of four deep learning models**.  
+All models operate on variable-length sensor sequences and are trained in a **subject-independent setting** to ensure generalization.
 
-Rather than relying on a single model or a naive averaging strategy, the final prediction is obtained through a **confidence- and disagreement-aware ensemble mechanism**, designed to preserve strong predictions while remaining robust to model uncertainty.
+Model diversity is achieved through differences in **temporal modeling (GRU / LSTM variants)**, **attention usage**, and **feature emphasis**, while sharing a common preprocessing and optimization backbone.
 
+
+## Input Representation & Preprocessing
+
+- Raw **IMU signals** (accelerometer and gyroscope channels)
+- **Per-channel normalization** applied consistently across train and inference
+- Variable-length sequences handled without aggressive truncation
+- Subjects with incorrect sensor orientation removed during data cleaning
+- Left-handed subjects explicitly considered during subject-level splitting
+
+
+## Core Architectural Components
+
+All models are composed using combinations of the following building blocks:
+
+- **Residual 1D CNN blocks** for local temporal feature extraction
+- **Squeeze-and-Excitation (SE) blocks** for channel-wise feature recalibration
+- **Recurrent layers** for temporal modeling:
+  - GRU
+  - LSTM
+  - Bidirectional GRU (BiGRU)
+  - Bidirectional LSTM (BiLSTM)
+- **Attention mechanisms** applied over temporal dimensions
+- Fully connected layers for final classification
+
+Regularization techniques:
+- **Dropout**
+- **Weight decay (L2 regularization)**
 
 
 ## Individual Models
 
-### Model 1
+### Model 1 – Residual CNN + BiGRU + Attention
 
-- Sequence-based deep learning model operating directly on raw IMU time-series.
-- Focuses on capturing fine-grained temporal motion patterns.
-- Particularly strong on frequently repeated gesture types.
-- Outputs a full probability distribution over all gesture classes.
-
-
-
-### Model 2
-
-- Uses an alternative preprocessing pipeline with enhanced normalization.
-- More robust to subject-level variability and orientation differences.
-- Emphasizes generalization across different motion execution styles.
-- Produces calibrated class probability outputs.
+- Residual CNN blocks extract short-range motion patterns
+- **Bidirectional GRU** captures temporal dependencies
+- **Temporal attention** highlights informative motion segments
+- Strong performance on frequently repeated gestures
 
 
 
-### Model 3
+### Model 2 – Residual CNN + BiLSTM + Attention
 
-- Recurrent architecture optimized for long-range temporal dependencies.
-- Effective for gestures with longer duration and complex motion structure.
-- Complements other models by capturing extended temporal context.
+- Residual CNN frontend for local dynamics
+- **Bidirectional LSTM** for long-range temporal continuity
+- Attention layer improves robustness to variable gesture duration
+- More expressive memory dynamics than GRU-based variants
 
 
 
-### Model 4
+### Model 3 – Hybrid BiGRU + BiLSTM Model
 
-- Feature-enhanced model combining temporal learning with signal-domain representations.
-- Incorporates additional descriptors such as frequency-domain energy and spatial signal characteristics.
-- Provides complementary information to purely sequence-driven models.
+- Combines **BiGRU and BiLSTM layers** in a stacked configuration
+- Leverages complementary temporal characteristics of GRU and LSTM
+- Attention used to adaptively weight temporal features
+- Improves discrimination for complex or ambiguous gestures
+
+
+
+### Model 4 – Feature-Calibrated Recurrent Model
+
+- Uses SE blocks to emphasize informative sensor channels
+- Recurrent backbone (GRU/LSTM variant) with attention
+- Designed to complement other models via feature recalibration rather than depth
 
 
 
@@ -322,66 +349,53 @@ Rather than relying on a single model or a naive averaging strategy, the final p
 
 ### Motivation
 
-Each individual model performs well on different subsets of gestures and motion characteristics.  
-A simple averaging of predictions may suppress confident outputs when models disagree.
+Different architectures specialize in different temporal and gesture characteristics.  
+A single model or naive averaging strategy may underperform on ambiguous sequences.
 
-To address this, the ensemble dynamically adapts its behavior based on **model agreement** for each input sequence.
-
-
-
-### Measuring Model Disagreement
-
-- For a given sequence, probability outputs from all four models are compared.
-- **Jensen–Shannon Divergence (JSD)** is computed pairwise between model predictions.
-- The mean JSD value serves as a quantitative measure of disagreement:
-  - **Low disagreement** → models are consistent
-  - **High disagreement** → models provide conflicting predictions
+To address this, a **disagreement-aware ensemble** is used.
 
 
 
-### Adaptive Combination Mechanism
+### Disagreement Measurement
 
-The ensemble blends two complementary behaviors depending on the disagreement level.
+- Each model outputs a probability distribution over gesture classes
+- **Jensen–Shannon Divergence (JSD)** is computed pairwise between model outputs
+- Mean JSD is used as a disagreement score:
+  - Low JSD → high agreement
+  - High JSD → conflicting predictions
 
-#### Low Disagreement: Consensus Reinforcement
 
-- Model outputs are combined using the **geometric mean** of probabilities.
-- Encourages agreement-driven predictions and improves stability.
 
-#### High Disagreement: Confidence Preservation
+### Adaptive Fusion Mechanism
 
-- The model with the **highest maximum class confidence** is identified.
-- The final prediction is softly biased toward this model to avoid over-smoothing.
-- A mild probability sharpening is applied to preserve decision clarity.
+The ensemble dynamically blends two behaviors:
 
-A continuous gating factor `t ∈ [0, 1]` controls the transition between these two regimes.
+- **Consensus mode**  
+  - Uses the **geometric mean** of model probabilities  
+- **Confidence-preserving mode**  
+  - Biases the output toward the **most confident model**
+  - Applies mild probability sharpening to avoid over-smoothing
 
+A continuous gating parameter `t ∈ [0, 1]` controls the transition between modes.
 
 
 ### Final Prediction
 
-In log-probability space, the ensemble output is computed as:
+Fusion is performed in log-probability space:
 > ## log_p = (1 − t) · log(p_consensus) + t · log(p_confident)
 
-- `p_consensus`: geometric mean of all model probabilities  
-- `p_confident`: probability output of the most confident model  
-- The final class label is selected via `argmax(log_p)`
+Final class prediction is obtained via `argmax(log_p)`.
 
 
+## Training & Validation Strategy
 
-## Advantages of the Ensemble
-
-- Preserves strong predictions for difficult or ambiguous samples
-- Avoids excessive smoothing when model opinions diverge
-- Robust across different subjects, motion styles, and gesture durations
-- Well-aligned with both binary and multi-class evaluation objectives
-
+- **Subject-independent cross-validation**
+- Balanced distribution of left-handed subjects across folds
+- Care taken to avoid usage of train-only metadata during inference
+- Optimization aligned with both **binary** and **multi-class macro F1 objectives**
 
 
-## Inference Pipeline
+## Inference
 
-During inference, all four models are executed for each sequence.  
-The adaptive ensemble logic is applied **per sample**, and the resulting prediction represents the final output of the system.
-
-
-
+All four models are executed for each sequence.  
+The adaptive ensemble logic is applied **per sample**, producing the final prediction.
