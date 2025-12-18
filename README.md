@@ -1,4 +1,4 @@
-# Detect Behavior From Sensor Data (Helios)
+# Detect Behavior From Sensor Data (Helios Wristband)
 This repository explores time-series classification using multimodal sensor data collected from the Helios wristband, which integrates IMU (motion), ThM (temperature), and ToF (proximity) sensors. The objective is to detect and differentiate body-focused repetitive behaviors (BFRBs), such as hair pulling, from everyday non-BFRB gestures, such as adjusting glasses.
 
 Accurately disentangling these behaviors is an important step toward developing reliable wearable BFRB-detection devices, which have direct applications in mental health monitoring and treatment support.
@@ -74,6 +74,141 @@ train[tof_cols]
 * Wave hello
 
 ## DATA
+### Dataset Composition
+
+- The dataset consists of **81 subjects** and **8,151 motion sequences**.
+- There are **18 gesture classes** in total, including both **target (BFRB-related)** and **non-target** gestures.
+- All subjects perform **all gesture types**, and each gesture is repeated **multiple times per subject**.
+- A subset of gestures corresponds to **BFRB behaviors**, while others are **non-BFRB control gestures**.
+- The distinction between *Target* and *Non-Target* gestures is provided only in the **training set** via the `sequence_type` feature and is **not available in the test set**.
+
+### Sequence Types and Metadata (Train-only)
+
+The following metadata values are **present only in the training set** and do **not appear in the test set**:
+
+- `sequence_type`: Target, Non-Target  
+- `phase`: Transition, Gesture  
+- `orientation`:  
+  - Seated Straight  
+  - Seated Lean Non-Dominant – Face Down  
+  - Lie on Back  
+  - Lie on Side – Non-Dominant  
+- `behavior`:  
+  - Perform gesture  
+  - Moves hand to target location  
+  - Hand at target location  
+  - Relaxes and moves hand to target location  
+
+These features cannot be used at inference time and were treated with care to avoid data leakage.
+
+### Sequence Length Statistics
+
+Motion sequences are variable-length. The distribution of sequence lengths (`SEQ_LEN`) is as follows:
+
+| Statistic | Value |
+|---------|-------|
+| Count   | 8,151 |
+| Mean    | 70.54 |
+| Std     | 35.39 |
+| Min     | 29 |
+| 25%     | 51 |
+| Median  | 59 |
+| 75%     | 78 |
+| Max     | 700 |
+
+This large variance in sequence length makes **temporal modeling and attention mechanisms especially important**.
+
+### Handedness and Data Cleaning
+
+- **12 subjects are left-handed**.
+- **2 subjects were identified with incorrectly mounted devices**, indicated by a consistently negative mean in the `acc_y` signal.
+- These 2 subjects were **excluded from training** to prevent systematic noise.
+
+### Train / Validation Split Strategy
+
+- Data was split **by subject**, ensuring that no subject appears in both training and validation sets.
+- Left-handed subjects were **evenly distributed** across folds to maintain balance.
+- This strategy reflects a realistic generalization scenario and prevents subject-level leakage.
+
+---
+
+## Gesture Distribution
+
+### Total Motion Samples per Gesture  
+*(Including all time steps across sequences)*
+
+| Gesture | Total Samples |
+|-------|---------------|
+| Text on phone | 58,462 |
+| Neck – scratch | 56,619 |
+| Eyebrow – pull hair | 44,305 |
+| Forehead – scratch | 40,923 |
+| Forehead – pull hairline | 40,802 |
+| Above ear – pull hair | 40,560 |
+| Neck – pinch skin | 40,507 |
+| Eyelash – pull hair | 40,218 |
+| Cheek – pinch skin | 40,124 |
+| Wave hello | 34,356 |
+| Write name in air | 31,267 |
+| Pull air toward your face | 30,743 |
+| Feel around in tray and pull out an object | 17,114 |
+| Glasses on/off | 13,542 |
+| Drink from bottle/cup | 13,093 |
+| Scratch knee/leg skin | 12,328 |
+| Write name on leg | 10,138 |
+| Pinch knee/leg skin | 9,844 |
+
+### Number of Sequences per Gesture
+
+| Gesture | # Sequences |
+|-------|-------------|
+| Forehead – scratch | 640 |
+| Text on phone | 640 |
+| Forehead – pull hairline | 640 |
+| Neck – scratch | 640 |
+| Neck – pinch skin | 640 |
+| Eyelash – pull hair | 640 |
+| Above ear – pull hair | 638 |
+| Eyebrow – pull hair | 638 |
+| Cheek – pinch skin | 637 |
+| Wave hello | 478 |
+| Write name in air | 477 |
+| Pull air toward your face | 477 |
+| Feel around in tray and pull out an object | 161 |
+| Write name on leg | 161 |
+| Pinch knee/leg skin | 161 |
+| Scratch knee/leg skin | 161 |
+| Drink from bottle/cup | 161 |
+| Glasses on/off | 161 |
+
+---
+
+## Observations
+
+- **All 81 subjects perform all 18 gestures**, but the **number of repetitions varies significantly** between gestures.
+- BFRB-related gestures are generally **repeated more frequently per subject** than non-BFRB gestures.
+- Average repetitions per subject per gesture:
+
+| Gesture | Avg. Repetitions |
+|-------|------------------|
+| Above ear – pull hair | 7.88 |
+| Cheek – pinch skin | 7.86 |
+| Eyebrow – pull hair | 7.88 |
+| Eyelash – pull hair | 7.90 |
+| Forehead – pull hairline | 7.90 |
+| Forehead – scratch | 7.90 |
+| Neck – pinch skin | 7.90 |
+| Neck – scratch | 7.90 |
+| Text on phone | 7.90 |
+| Wave hello | 5.90 |
+| Write name in air | 5.89 |
+| Pull air toward your face | 5.89 |
+| Drink from bottle/cup | 1.99 |
+| Glasses on/off | 1.99 |
+| Scratch knee/leg skin | 1.99 |
+| Write name on leg | 1.99 |
+| Pinch knee/leg skin | 1.99 |
+| Feel around in tray and pull out an object | 1.99 |
 <img width="1920" height="578" alt="train" src="https://github.com/user-attachments/assets/563191ef-102b-4834-9c98-6fe6cc7c58e2" />
 
 ### TRAIN DATA
@@ -99,3 +234,5 @@ train[tof_cols]
 * height_cm: Height of the participant in centimeters.
 * shoulder_to_wrist_cm: Distance from shoulder to wrist in centimeters.
 * elbow_to_wrist_cm: Distance from elbow to wrist in centimeters.
+
+* 
